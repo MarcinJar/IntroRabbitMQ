@@ -1,0 +1,56 @@
+name: intro-rabbitmq
+services:
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672" 
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq  
+    environment:
+      - RABBITMQ_DEFAULT_USER=user 
+      - RABBITMQ_DEFAULT_PASS=password 
+    networks:
+      - laboratory-rabbitmq
+
+  producer:
+    build:
+      context: ./Producer  
+      dockerfile: Dockerfile 
+    container_name: producer
+    stdin_open: true 
+    tty: true      
+    command: ["dotnet", "Producer.dll"]
+    depends_on:
+      - rabbitmq 
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=user
+      - RABBITMQ_PASS=password
+    networks:
+      - laboratory-rabbitmq
+
+  consumer:
+    build:
+      context: ./Consumer  
+      dockerfile: Dockerfile 
+    container_name: consumer
+    stdin_open: true 
+    tty: true      
+    command: ["dotnet", "Consumer.dll"]
+    depends_on:
+      - rabbitmq 
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=user
+      - RABBITMQ_PASS=password
+    networks:
+      - laboratory-rabbitmq
+
+volumes:
+  rabbitmq_data: 
+
+networks:
+  laboratory-rabbitmq: 
+    driver: bridge

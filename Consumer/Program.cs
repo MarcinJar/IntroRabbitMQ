@@ -2,7 +2,7 @@
 using RabbitMQ.Client;
 using System.Text;
 
-var factory = new ConnectionFactory() { HostName = "rabbitmqcontainer" };
+var factory = new ConnectionFactory() { HostName = "rabbitmq" };
 
 var number = 0;
 
