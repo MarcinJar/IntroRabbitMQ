@@ -2,7 +2,21 @@
 using RabbitMQ.Client;
 using System.Text;
 
-var factory = new ConnectionFactory() { HostName = "rabbitmq" };
+// Get RabbitMQ connection details from environment variables
+var rabbitMqHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost";
+var rabbitMqUser = Environment.GetEnvironmentVariable("RABBITMQ_USER") ?? "guest";
+var rabbitMqPass = Environment.GetEnvironmentVariable("RABBITMQ_PASS") ?? "guest";
+
+var factory = new ConnectionFactory()
+{
+    HostName = rabbitMqHost,
+    UserName = rabbitMqUser,
+    Password = rabbitMqPass,
+};
+
+
+Console.WriteLine(" Press any key to star reading messages.");
+Console.ReadKey();
 
 var number = 0;
 
@@ -35,3 +49,6 @@ using (var channel = connection.CreateModel())
     Console.WriteLine(" Press any key to exit.");
     Console.ReadKey();
 }
+
+Console.WriteLine(" Press any key to exit.");
+Console.ReadKey();

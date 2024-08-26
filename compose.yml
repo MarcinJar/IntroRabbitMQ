@@ -19,9 +19,9 @@ services:
       context: ./Producer  
       dockerfile: Dockerfile 
     container_name: producer
+    command: ["dotnet", "Producer.dll"]
     stdin_open: true 
     tty: true      
-    command: ["dotnet", "Producer.dll"]
     depends_on:
       - rabbitmq 
     environment:
@@ -35,10 +35,10 @@ services:
     build:
       context: ./Consumer  
       dockerfile: Dockerfile 
-    container_name: consumer
+    container_name: consumer   
+    command: ["dotnet", "Consumer.dll"]
     stdin_open: true 
     tty: true      
-    command: ["dotnet", "Consumer.dll"]
     depends_on:
       - rabbitmq 
     environment:

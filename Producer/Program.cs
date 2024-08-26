@@ -1,7 +1,16 @@
 ﻿using RabbitMQ.Client;
 using System.Text;
 
-var factory = new ConnectionFactory() { HostName = "rabbitmq" };
+// Get RabbitMQ connection details from environment variables
+var rabbitMqHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost";
+var rabbitMqUser = Environment.GetEnvironmentVariable("RABBITMQ_USER") ?? "guest";
+var rabbitMqPass = Environment.GetEnvironmentVariable("RABBITMQ_PASS") ?? "guest";
+
+var factory = new ConnectionFactory() { 
+    HostName = rabbitMqHost,
+    UserName = rabbitMqUser,
+    Password = rabbitMqPass,
+};
 
 using (var connection = factory.CreateConnection())
 using (var channel = connection.CreateModel())
